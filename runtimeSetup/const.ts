@@ -1,0 +1,8 @@
+export const SCAN_INTERVAL_MS = 300000
+export const MAX_TX_LOOKBACK = 200
+export const WHALE_THRESHOLD = 100000
+export const VOLUME_SPIKE_WINDOW = 50
+export const VOLUME_SPIKE_THRESHOLD_PCT = 50
+export const DISTRIBUTION_TOP_N = 20
+export const RISK_ALERT_THRESHOLD = 0.85
+export const CACHE_TTL_MS = 60000
