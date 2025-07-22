@@ -3,7 +3,7 @@ interface TruncateOptions {
   prefixLength?: number;
   suffixLength?: number;
   fallback?: string;
-  showFullOnHover?: boolean; // потенциальное будущее использование в UI
+  showFullOnHover?: boolean; 
 }
 
 export const truncateAddress = (
