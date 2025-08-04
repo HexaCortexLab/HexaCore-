@@ -31,6 +31,12 @@ interface APIResponse {
 export class TokenDepthAnalyzer {
   private cache = new Map<string, DepthResult>()
 
+  /**
+   * @param dexApi Base URL of the DEX API (e.g. https://api.example.com)
+   * @param defaultLevels How many price levels to fetch by default
+   * @param retryCount Number of retry attempts on fetch failure
+   * @param retryDelayMs Initial delay between retries (doubles each attempt)
+   */
   constructor(
     private dexApi: string,
     private defaultLevels: number = 10,
@@ -38,44 +44,16 @@ export class TokenDepthAnalyzer {
     private retryDelayMs: number = 500
   ) {}
 
-  private async fetchDepth(
-    mint: string,
-    levels: number
-  ): Promise<PairDepth> {
-    const url = `${this.dexApi}/latest/dex/pairs/solana/${mint}`
-    let response: Response
-
-    for (let attempt = 1; attempt <= this.retryCount; attempt++) {
-      try {
-        response = await fetch(url)
-        if (!response.ok) {
-          throw new Error(`Fetch error: ${response.status} ${response.statusText}`)
-        }
-        break
-      } catch (err) {
-        if (attempt === this.retryCount) throw err
-        await new Promise(res => setTimeout(res, this.retryDelayMs))
-      }
-    }
-
-    const data = (await response!.json()) as APIResponse
-
-    const parseEntries = (arr: [string, string][]): OrderBookEntry[] =>
-      arr.slice(0, levels).map(([price, size]) => ({
-        price: parseFloat(price),
-        size: parseFloat(size)
-      }))
-
-    return {
-      bids: parseEntries(data.pair.book.depth.bids),
-      asks: parseEntries(data.pair.book.depth.asks)
+  /** Clear cached result for a specific mint (or all if none provided). */
+  clearCache(mint?: string): void {
+    if (mint) {
+      this.cache.delete(`${mint}-${this.defaultLevels}`)
+    } else {
+      this.cache.clear()
     }
   }
 
-  private sumDepth(entries: OrderBookEntry[]): number {
-    return entries.reduce((sum, { price, size }) => sum + price * size, 0)
-  }
-
+  /** Analyze order-book depth for a single mint, with caching. */
   async analyzeDepth(
     mint: string,
     levels: number = this.defaultLevels
@@ -89,7 +67,8 @@ export class TokenDepthAnalyzer {
       return cached
     }
 
-    const { bids, asks } = await this.fetchDepth(mint, levels)
+    const { bids, asks } = await this.fetchDepthWithRetry(mint, levels)
+
     const result: DepthResult = {
       mint,
       totalBidDepth: this.sumDepth(bids),
@@ -101,12 +80,69 @@ export class TokenDepthAnalyzer {
     return result
   }
 
+  /** Analyze multiple mints in parallel. */
   async analyzeMultiple(
     mints: string[],
     levels: number = this.defaultLevels
   ): Promise<DepthResult[]> {
-    return Promise.all(
-      mints.map(mint => this.analyzeDepth(mint, levels))
-    )
+    return Promise.all(mints.map(mint => this.analyzeDepth(mint, levels)))
+  }
+
+  /** Fetch order-book depth with retry and exponential backoff. */
+  private async fetchDepthWithRetry(
+    mint: string,
+    levels: number
+  ): Promise<PairDepth> {
+    const url = `${this.dexApi}/latest/dex/pairs/solana/${mint}`
+    let attempt = 0
+    let delay = this.retryDelayMs
+    let response: Response
+
+    while (++attempt <= this.retryCount) {
+      try {
+        response = await fetch(url)
+        if (!response.ok) {
+          throw new Error(`Fetch error: ${response.status} ${response.statusText}`)
+        }
+        const data = (await response.json()) as APIResponse
+        return {
+          bids: this.parseEntries(data.pair.book.depth.bids, levels),
+          asks: this.parseEntries(data.pair.book.depth.asks, levels)
+        }
+      } catch (err) {
+        if (attempt === this.retryCount) {
+          throw new Error(`Failed to fetch depth for ${mint} after ${attempt} attempts: ${err}`)
+        }
+        await this.delay(delay)
+        delay *= 2
+      }
+    }
+    // should not reach here
+    throw new Error('Unexpected error in fetchDepthWithRetry')
+  }
+
+  /** Parse raw string entries into typed OrderBookEntry[] */
+  private parseEntries(
+    arr: [string, string][],
+    levels: number
+  ): OrderBookEntry[] {
+    return arr.slice(0, levels).map(([price, size]) => {
+      const p = parseFloat(price)
+      const s = parseFloat(size)
+      if (isNaN(p) || isNaN(s)) {
+        throw new Error(`Invalid depth entry: [${price}, ${size}]`)
+      }
+      return { price: p, size: s }
+    })
+  }
+
+  /** Sum up price * size across entries. */
+  private sumDepth(entries: OrderBookEntry[]): number {
+    return entries.reduce((sum, { price, size }) => sum + price * size, 0)
+  }
+
+  /** Simple delay helper. */
+  private delay(ms: number): Promise<void> {
+    return new Promise(res => setTimeout(res, ms))
   }
 }
