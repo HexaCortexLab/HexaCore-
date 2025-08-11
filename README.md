@@ -35,6 +35,7 @@ Validates timestamp integrity to detect manipulation, sync errors, or blockchain
 -[Docs](https://hexacortex.gitbook.io/hexacortex-docs/)
 
 -[Telegram](t.me/HexaCoreAI)
+
 ---
 
 ## 🧠 AI Functionality
