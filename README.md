@@ -23,43 +23,18 @@ Predicts major market shifts by tracking directional liquidity flows and trend r
 Validates timestamp integrity to detect manipulation, sync errors, or blockchain-side latency issues.
 
 ---
-## 🗺 Roadmap
 
-HexaCore is built to evolve across three core phases — from data tracking to predictive intelligence.
+## 🌐 Official Links
 
-### ✅ Phase I — Core Construct *(MVP Ready)*  
-**Status:** Deployed — Q3 2025
+-[Twitter (X)](https://x.com/HexaCoreLab)
 
-The backbone of HexaCore’s intelligence engine is live.  
-Core systems now operate in real-time — tracking, monitoring, and interpreting on-chain signals across networks.
+-[Website](https://www.hexacorelab.com/)
 
-- 🔍 **CoreTrack** — Deep blockchain data analytics  
-- ⚠️ **HexaRisk** — Instant risk detection and volatility prediction  
-- 🌐 **DataFlow** — Live blockchain signal capture  
-- 📡 **SignalCore** — Visual market pulse scanner with predictive overlays
-  
-### 🟣 Phase II — Expanding Perception *(In Progress)*  
-**Status:** Development — Q4 2025
+-[Chrome](https://chromewebstore.google.com/detail/hexacore/bopjbphhfgddhnoappoadoonkidbcagh)
 
-HexaCore shifts from awareness to interpretation.  
-The AI expands its sensing range, identifying behavioral patterns and signal clusters with surgical precision.
+-[Docs](https://hexacortex.gitbook.io/hexacortex-docs/)
 
-- 🛡️ **CoreGuard** — Contract anomaly defense system  
-- 🔍 **RiskLens** — Enhanced risk overlays from behavioral analysis  
-- 📈 **TrendFlow** — Market momentum and trend prediction in real time  
-- 🔗 **CoreSync** — Cross-asset and multi-chain monitoring layer  
-
-### 🔴 Phase III — Predictive Intelligence *(Upcoming)*  
-**Status:** Planned Rollout — Q4 2025 to Q1 2026
-
-HexaCore begins forecasting blockchain behavior — from wallets to sentiment — before the market reacts.
-
-- 🛰 **Flashloan Radar** — Early detection of exploit patterns  
-- 🧠 **AI Risk Engine** — Predictive modeling using evolving threat logic  
-- 🧬 **PatternNet** — Wallet clustering and Sybil attack detection  
-- 💬 **SignalSentiment** — Real-time social and narrative analysis  
-- 🌉 **ChainBridge Watch** — Cross-chain anomaly and correlation forecasting  
-
+-[Telegram](t.me/HexaCoreAI)
 ---
 
 ## 🧠 AI Functionality
