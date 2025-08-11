@@ -5,23 +5,6 @@
 **HexaCore** is an AI-powered platform for detecting blockchain risks in real time.  
 By analyzing token behavior, volatility, and transaction patterns, HexaCore provides dynamic insights to help users interact with on-chain ecosystems more safely and intelligently.
 
-## 🔑 Key Features
-
-### 🔐 CoreGuard  
-Analyzes transaction-level data using token age, liquidity pressure, and behavioral intensity to detect foundational risk patterns.
-
-### 🧬 HexTrack  
-Maps multi-layered anomalies by combining signals from price fluctuation, volume spikes, and liquidity instability.
-
-### 🔮 QuantumPulse  
-Forecasts short-term volatility by correlating price movement with depth and velocity of market interactions.
-
-### 🌐 QuantumShift  
-Predicts major market shifts by tracking directional liquidity flows and trend reversals in token activity.
-
-### 🔄 HexaSync  
-Validates timestamp integrity to detect manipulation, sync errors, or blockchain-side latency issues.
-
 ---
 
 ## 🌐 Official Links
