@@ -36,7 +36,6 @@ export class EmergingTokenScanner {
       const tx = await this.conn.getParsedConfirmedTransaction(info.signature, 'confirmed')
       if (!tx?.meta?.logMessages) continue
 
-      // detect InitializeMint instruction
       if (tx.meta.logMessages.some(l => l.includes('Instruction: InitializeMint'))) {
         const inst = (tx.transaction.message.instructions as any[]).find(ix =>
           ix.program === 'spl-token' && ix.parsed?.type === 'initializeMint'
