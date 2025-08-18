@@ -17,7 +17,6 @@ By analyzing token behavior, volatility, and transaction patterns, HexaCore prov
 
 -[Docs](https://hexacortex.gitbook.io/hexacortex-docs/)
 
--[Telegram](t.me/HexaCoreAI)
 
 ---
 
